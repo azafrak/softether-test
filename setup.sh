@@ -3,11 +3,11 @@
 
 
 SERVER_IP=$(dig @resolver4.opendns.com myip.opendns.com +short)
-SERVER_PASSWORD="1q2w3e4R"
-USER="user1"
-USER_PASSWORD="1q2w3e4R!!"
+SERVER_PASSWORD="hacker542"
+USER="azafrak"
+USER_PASSWORD="hacker542"
 HUB="VPN"
-SHARED_KEY="5m6VPN!!"
+SHARED_KEY="Taz2206"
 IP_START="10.10.0.10"
 IP_END="10.10.0.250"
 IP_LOCAL="10.10.0.1"
