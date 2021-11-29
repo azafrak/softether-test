@@ -499,7 +499,7 @@ function autoupdate(){
 		break
 	fi
 
-	service stop vpnserver
+	service vpnserver stop
 	echo "updating vpn server"
 	make
 	cd /root/vpnserver
@@ -508,7 +508,7 @@ function autoupdate(){
 	chmod 700 vpncmd
 	killall vpnserver
 	cp -r * /usr/local/vpnserver/
-	service start vpnserver
+	service vpnserver start
 
 	clear
 
