@@ -15,8 +15,9 @@ IP_MASK="10.10.0.0/24"
 DNS1="8.8.8.8"
 DNS2="8.8.4.4"
 
+
 #set version to download
-latest="v4.37-9758-beta-2021.08.16"
+latest=$(wget -q -O - https://www.softether-download.com/files/softether/ | grep -P -i -o '(?<=href="\/files\/softether\/)(v\d+.\d+-\d+-rtm-\d{4}.\d{2}.\d{2})' | tail -1)
 arch="64bit_-_Intel_x64_or_AMD64"
 arch2="x64-64bit"
 
