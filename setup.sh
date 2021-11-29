@@ -17,8 +17,8 @@ DNS2="8.8.4.4"
 
 
 #set version to download
-#latest=$(wget -q -O - https://www.softether-download.com/files/softether/ | grep -P -i -o '(?<=href="\/files\/softether\/)(v\d+.\d+-\d+-rtm-\d{4}.\d{2}.\d{2})' | tail -1)
-latest="v4.37-9758-beta-2021.08.16"
+latest=$(wget -q -O - https://www.softether-download.com/files/softether/ | grep -P -i -o '(?<=href="\/files\/softether\/)(v\d+.\d+-\d+-rtm-\d{4}.\d{2}.\d{2})' | tail -1)
+#latest="v4.37-9758-beta-2021.08.16"
 arch="64bit_-_Intel_x64_or_AMD64"
 arch2="x64-64bit"
 
@@ -470,14 +470,47 @@ function resetIPTables(){
 	iptables -X
 }
 
-function autoupdate(){
-	latest=$(wget -q -O - https://www.softether-download.com/files/softether/ | grep -P -i -o '(?<=href="\/files\/softether\/)(v\d+.\d+-\d+-rtm-\d{4}.\d{2}.\d{2})' | tail -1)
-	arch="64bit_-_Intel_x64_or_AMD64"
-	arch2="x64-64bit"
+#function autoupdate(){
+#	latest=$(wget -q -O - https://www.softether-download.com/files/softether/ | grep -P -i -o '(?<=href="\/files\/softether\/)(v\d+.\d+-\d+-rtm-\d{4}.\d{2}.\d{2})' | tail -1)
+#	arch="64bit_-_Intel_x64_or_AMD64"
+#	arch2="x64-64bit"
+#
+#	#generate url to download
+#	file="softether-vpnserver-"$latest"-linux-"$arch2".tar.gz"
+#	link="http://www.softether-download.com/files/softether/"$latest"-tree/Linux/SoftEther_VPN_Server/"$arch"/"$file
 
-	#generate url to download
-	file="softether-vpnserver-"$latest"-linux-"$arch2".tar.gz"
-	link="http://www.softether-download.com/files/softether/"$latest"-tree/Linux/SoftEther_VPN_Server/"$arch"/"$file
+#}
+
+function autoupdate(){
+	clear
+	rm -rf $file
+	echo "Downloading $file"
+	wget "$link"
+	if [ -f "$file" ];then
+		rm -rf vpnserver
+		tar xzf "$file"
+		dir=$(pwd)
+		echo "current dir " $dir
+		cd vpnserver
+		dir=$(pwd)
+		echo "changed to dir " $dir
+	else
+		echo "Archive not found. Please rerun this script or check permission."
+		break
+	fi
+
+	service stop vpnserver
+	echo "updating vpn server"
+	make
+	cd /root/vpnserver
+	chmod 600 *
+	chmod 700 vpnserver
+	chmod 700 vpncmd
+	killall vpnserver
+	cp -r * /usr/local/vpnserver/
+	service start vpnserver
+
+	clear
 
 }
 
